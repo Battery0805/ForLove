@@ -1,273 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Chello ❤️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Our Legendary Love ❤️</title>
 
+<!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
-
 :root{
-  --pink:#ff4d88;
-  --bg:#fff0f5;
+  --pink:#ff2d6b;
+  --rose:#ff9ac7;
+  --glass: rgba(255,255,255,0.08);
+  --bg1:#120015;
+  --bg2:#000;
 }
 
+*{box-sizing:border-box}
 body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
+  margin:0; font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(ellipse at bottom, var(--bg1), var(--bg2));
   overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
 }
 
-/* Floating Hearts */
-.heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation: float 6s linear infinite;
-  opacity:0.7;
-}
+/* ===== Ambient ===== */
+.star{ position:fixed; width:2px; height:2px; background:#fff; opacity:.7; animation:tw 3s infinite alternate; }
+@keyframes tw{ from{opacity:.2} to{opacity:1} }
 
-@keyframes float{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-110vh)}
-}
+.heart{ position:fixed; bottom:-30px; font-size:22px; opacity:.9; animation:float 8s linear infinite; }
+@keyframes float{ from{transform:translateY(0)} to{transform:translateY(-115vh)} }
 
+/* ===== Layout ===== */
+.shell{ width:min(520px, 94vw); position:relative; }
 .card{
-  background:white;
-  padding:2rem;
-  border-radius:30px;
-  width:min(450px,90vw);
+  background: var(--glass); backdrop-filter: blur(12px);
+  border-radius:28px; padding:22px; box-shadow: 0 0 60px rgba(255,0,120,.2);
   text-align:center;
-  box-shadow:0 15px 35px rgba(0,0,0,0.1);
-  z-index:10;
 }
+.hidden{ display:none; }
 
-.hidden{display:none;}
+h1,h2,h3{ margin:.4em 0 .2em }
+p{ opacity:.95 }
 
 button{
-  padding:14px 28px;
-  border:none;
-  border-radius:50px;
-  background:var(--pink);
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
+  border:none; border-radius:999px; padding:12px 22px; margin-top:10px;
+  color:#fff; font-weight:700; letter-spacing:.3px; cursor:pointer;
+  background: linear-gradient(45deg, #ff2d6b, #ff8ac0);
+  transition:.2s transform, .2s filter, .2s box-shadow;
+  box-shadow: 0 8px 24px rgba(255,45,107,.35);
+}
+button:hover{ transform: translateY(-1px) scale(1.03); filter:brightness(1.05) }
+
+.row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap }
+
+.pill{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:rgba(255,255,255,.12); font-size:.85rem; margin-bottom:6px;
 }
 
-.tap-btn{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  font-size:1.6rem;
+/* ===== Music / Voice ===== */
+.toolbar{
+  position:fixed; top:14px; right:14px; display:flex; gap:10px; z-index:99;
+}
+.tool{
+  width:42px; height:42px; border-radius:50%; background:#fff; color:#111;
+  display:grid; place-items:center; cursor:pointer; font-size:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
 
-.memory img{
-  width:100%;
-  border-radius:15px;
-  margin-top:10px;
+/* ===== Chapters Nav ===== */
+.navdots{ margin-top:8px }
+.dot{
+  display:inline-block; width:8px; height:8px; border-radius:50%;
+  background:rgba(255,255,255,.35); margin:0 3px;
+}
+.dot.active{ background:#fff }
+
+/* ===== 3D Photo Cube ===== */
+.scene{ width:220px; height:220px; margin:16px auto; perspective:800px; }
+.cube{
+  width:100%; height:100%; position:relative; transform-style:preserve-3d;
+  animation:spin 14s infinite linear;
+}
+@keyframes spin{ from{ transform: rotateX(-10deg) rotateY(0deg)} to{ transform: rotateX(-10deg) rotateY(360deg)} }
+.face{
+  position:absolute; width:220px; height:220px; border-radius:18px; overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+.face img{ width:100%; height:100%; object-fit:cover }
+
+/* Position faces */
+.f1{ transform: translateZ(110px) }
+.f2{ transform: rotateY(180deg) translateZ(110px) }
+.f3{ transform: rotateY(90deg) translateZ(110px) }
+.f4{ transform: rotateY(-90deg) translateZ(110px) }
+.f5{ transform: rotateX(90deg) translateZ(110px) }
+.f6{ transform: rotateX(-90deg) translateZ(110px) }
+
+/* ===== Secret Lock ===== */
+.lock{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin:10px auto; max-width:260px;
+}
+.lock input{
+  text-align:center; font-size:1.2rem; border-radius:10px; border:none; padding:10px;
+  background:rgba(255,255,255,.15); color:#fff;
 }
 
-.quiz button{
-  display:block;
-  width:100%;
-  margin:8px 0;
+/* ===== Hug/Kiss ===== */
+.tapzone{
+  margin:10px auto; width:180px; height:180px; border-radius:50%;
+  background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.15), rgba(255,45,107,.25));
+  display:grid; place-items:center; font-size:54px; cursor:pointer;
+  box-shadow: inset 0 0 30px rgba(255,255,255,.12), 0 10px 30px rgba(255,45,107,.3);
 }
 
-.poem{
-  font-style:italic;
-  background:#fff4f7;
-  padding:15px;
-  border-radius:15px;
+/* ===== Proposal Ring ===== */
+.ring-wrap{ margin:16px auto; width:160px; height:160px; position:relative; }
+.ring{
+  position:absolute; inset:0; border-radius:50%;
+  border:4px solid rgba(255,255,255,.25);
+}
+.ring.glow{
+  border-color:#ff8ac0; box-shadow: 0 0 30px #ff8ac0, inset 0 0 30px rgba(255,138,192,.4);
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+/* ===== Love Meter ===== */
+.meter{ width:100%; height:22px; border-radius:999px; background:#2a2a2a; overflow:hidden; }
+.fill{ height:100%; width:0%; background:linear-gradient(90deg,#ff2d6b,#ff90c2); transition:2s; }
+
+/* ===== Letter ===== */
+.letter{
+  min-height:120px; background:rgba(255,255,255,.1); border-radius:16px; padding:12px; font-style:italic;
 }
 
-.music-toggle{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:white;
-  padding:10px;
-  border-radius:50%;
-  cursor:pointer;
-}
+/* ===== Countdown ===== */
+.countdown{ color:var(--rose); margin-top:8px }
 
-.countdown{
-  font-size:1.2rem;
-  margin-top:10px;
-  color:#ff2d6b;
-}
-
+/* Small */
+.small{ font-size:.9rem; opacity:.85 }
 </style>
 </head>
 
 <body>
 
-<div class="music-toggle" onclick="toggleMusic()">🎵</div>
-
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/audio/2023/03/09/audio_9a93dcf1be.mp3" type="audio/mp3">
+<!-- 🔧 Customize: Names / Media -->
+<audio id="bgMusic" loop>
+  <!-- 🔧 Replace with your couple song URL -->
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9a42d2.mp3" type="audio/mp3" />
 </audio>
 
-<div class="card">
+<audio id="voiceNote">
+  <!-- 🔧 Replace with your recorded voice message URL -->
+  <source src="" type="audio/mp3" />
+</audio>
 
-<!-- Stage 1 -->
-<div id="s1">
-<h2>Hi My Chello ❤️</h2>
-<p>You are my favorite notification, favorite smile, favorite everything.</p>
-<button onclick="next(1)">Start Surprise ✨</button>
+<div class="toolbar">
+  <div class="tool" onclick="toggleMusic()">🎵</div>
+  <div class="tool" onclick="playVoice()">🎙️</div>
 </div>
 
-<!-- Stage 2 Bouquet -->
-<div id="s2" class="hidden">
-<h2>Build Your Bouquet 🌸</h2>
-<div id="flowers"></div>
-<button class="tap-btn" onclick="addFlower()">❤️</button>
-<p id="count">0/8</p>
-</div>
+<div class="shell">
+  <div class="card">
 
-<!-- Stage 3 Memories -->
-<div id="s3" class="hidden">
-<h2>Our Memories 📸</h2>
-<div class="memory">
-<img src="https://picsum.photos/400/250?random=1">
-<p>The moment I started smiling more because of you</p>
-</div>
-<button onclick="next(3)">Next Memory</button>
-</div>
+    <!-- ===== Stage 1: Intro ===== -->
+    <section id="s1">
+      <span class="pill">Chapter 0</span>
+      <h1>Hi, My Chello ❤️</h1>
+      <p>Tonight, the sky holds a story… ours.</p>
+      <div class="row">
+        <button onclick="go(1)">Enter Our Story ✨</button>
+      </div>
+      <div class="navdots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
 
-<!-- Stage 4 Quiz -->
-<div id="s4" class="hidden quiz">
-<h2>Love Quiz 🧸</h2>
-<p>Who loves you the most?</p>
-<button onclick="next(4)">Me 😎</button>
-<button onclick="next(4)">Still Me ❤️</button>
-</div>
+    <!-- ===== Stage 2: Chapters ===== -->
+    <section id="s2" class="hidden">
+      <span class="pill">Chapter 1</span>
+      <h2>The Day I Met You</h2>
+      <p class="small">Everything got a little brighter… and I didn’t even know why yet.</p>
+      <div class="row">
+        <button onclick="go(2)">Next Chapter</button>
+      </div>
+      <div class="navdots"><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
 
-<!-- Stage 5 Proposal -->
-<div id="s5" class="hidden">
-<h2>Chello…</h2>
-<p>Will you be my Valentine? 🌹</p>
+    <!-- ===== Stage 3: 3D Photo Cube ===== -->
+    <section id="s3" class="hidden">
+      <span class="pill">Our Memories 📸</span>
+      <h2>Moments I Keep Forever</h2>
 
-<button onclick="yes()">YES 😍</button>
-<button id="noBtn">No 🥺</button>
-</div>
+      <div class="scene">
+        <div class="cube">
+          <!-- 🔧 Replace with real photos -->
+          <div class="face f1"><img src="https://picsum.photos/400/400?1" /></div>
+          <div class="face f2"><img src="https://picsum.photos/400/400?2" /></div>
+          <div class="face f3"><img src="https://picsum.photos/400/400?3" /></div>
+          <div class="face f4"><img src="https://picsum.photos/400/400?4" /></div>
+          <div class="face f5"><img src="https://picsum.photos/400/400?5" /></div>
+          <div class="face f6"><img src="https://picsum.photos/400/400?6" /></div>
+        </div>
+      </div>
 
-<!-- Stage 6 Finale -->
-<div id="s6" class="hidden">
-<h2>Yayyyy ❤️</h2>
+      <button onclick="go(3)">Keep Going 💞</button>
+      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
 
-<div class="poem" id="letter"></div>
+    <!-- ===== Stage 4: Secret Unlock ===== -->
+    <section id="s4" class="hidden">
+      <span class="pill">Secret Lock 🔐</span>
+      <h2>Enter Our Special Date</h2>
+      <p class="small">Hint: The day our story truly began (DDMM)</p>
 
-<div class="countdown" id="timer"></div>
+      <div class="lock">
+        <input maxlength="1" id="l1" />
+        <input maxlength="1" id="l2" />
+        <input maxlength="1" id="l3" />
+        <input maxlength="1" id="l4" />
+      </div>
 
-</div>
+      <div class="row">
+        <button onclick="checkLock()">Unlock ❤️</button>
+      </div>
+      <div id="lockMsg" class="small"></div>
 
+      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
+
+    <!-- ===== Stage 5: Hug/Kiss Interaction ===== -->
+    <section id="s5" class="hidden">
+      <span class="pill">Send Me Love 🫶</span>
+      <h2>Tap To Send Hugs & Kisses</h2>
+      <div class="tapzone" onclick="burst()">💋</div>
+      <p class="small">Every tap sends me a hug across the universe.</p>
+      <button onclick="go(5)">One More Thing…</button>
+
+      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+    </section>
+
+    <!-- ===== Stage 6: Love Meter + Proposal ===== -->
+    <section id="s6" class="hidden">
+      <span class="pill">Compatibility 🧸</span>
+      <h2>Calculating Our Love Level…</h2>
+      <div class="meter"><div class="fill" id="meter"></div></div>
+      <div class="row">
+        <button onclick="meterThenProposal()">Reveal Result</button>
+      </div>
+
+      <div id="proposal" class="hidden">
+        <div class="ring-wrap">
+          <div class="ring"></div>
+          <div class="ring glow"></div>
+        </div>
+        <h2>Will You Be My Valentine? 🌹</h2>
+        <div class="row">
+          <button onclick="yes()">YES 😍</button>
+          <button id="noBtn">No 🥺</button>
+        </div>
+      </div>
+
+      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+    </section>
+
+    <!-- ===== Stage 7: Finale ===== -->
+    <section id="s7" class="hidden">
+      <span class="pill">Forever ❤️</span>
+      <h2>You Make My World Beautiful</h2>
+      <div class="letter" id="letter"></div>
+      <div class="countdown" id="cd"></div>
+      <p class="small">I choose you. Today. Tomorrow. Always.</p>
+
+      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
+    </section>
+
+  </div>
 </div>
 
 <script>
-
-/* Stage Navigation */
-function next(num){
- document.getElementById("s"+num).classList.add("hidden");
- document.getElementById("s"+(num+1)).classList.remove("hidden");
+/* ===== Ambient Stars & Hearts ===== */
+for(let i=0;i<90;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
 }
-
-/* Floating Hearts */
 setInterval(()=>{
- let heart=document.createElement("div");
- heart.className="heart";
- heart.innerText="❤️";
- heart.style.left=Math.random()*100+"vw";
- heart.style.animationDuration=4+Math.random()*3+"s";
- document.body.appendChild(heart);
- setTimeout(()=>heart.remove(),6000);
-},600);
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText=["❤️","💖","💘","💕"][Math.floor(Math.random()*4)];
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},700);
 
-/* Music */
+/* ===== Stage Nav ===== */
+function go(n){
+  document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
+  document.getElementById("s"+(n+1)).classList.remove("hidden");
+}
+
+/* ===== Music / Voice ===== */
 function toggleMusic(){
- let m=document.getElementById("music");
- if(m.paused) m.play();
- else m.pause();
+  const m=document.getElementById("bgMusic");
+  m.paused?m.play():m.pause();
+}
+function playVoice(){
+  const v=document.getElementById("voiceNote");
+  if(!v.src){ alert("Add your voice note URL first ❤️"); return; }
+  v.play();
 }
 
-/* Bouquet Game */
-let c=0;
-let emojis=["🌸","🌹","🌷","🌺","🌻","🌼","💐","✨"];
-
-function addFlower(){
- if(c<8){
- let span=document.createElement("span");
- span.innerText=emojis[c];
- span.style.fontSize="2rem";
- document.getElementById("flowers").appendChild(span);
- c++;
- document.getElementById("count").innerText=c+"/8";
- if(c===8) setTimeout(()=>next(2),800);
- }
+/* ===== Secret Lock ===== */
+// 🔧 Customize: your special date in DDMM (e.g., 0709)
+const SECRET = "0709";
+function checkLock(){
+  const code = ["l1","l2","l3","l4"].map(id=>document.getElementById(id).value).join("");
+  const msg = document.getElementById("lockMsg");
+  if(code === SECRET){
+    msg.textContent="Unlocked 💖";
+    setTimeout(()=>go(4),700);
+  }else{
+    msg.textContent="Try again… our date deserves remembering 😌";
+  }
 }
 
-/* Evasive No Button */
-let no=document.getElementById("noBtn");
-
-no.onmouseover=()=>{
- no.style.position="absolute";
- no.style.left=Math.random()*200+"px";
- no.style.top=Math.random()*100+"px";
+/* ===== Hug/Kiss Burst ===== */
+function burst(){
+  confetti({ particleCount: 90, spread: 80, origin:{y:.7} });
 }
 
-/* YES CLICK */
+/* ===== Meter -> Proposal ===== */
+function meterThenProposal(){
+  const fill=document.getElementById("meter");
+  fill.style.width="100%";
+  setTimeout(()=>{
+    document.getElementById("proposal").classList.remove("hidden");
+  },1800);
+}
+
+/* ===== Evasive NO ===== */
+const noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=()=>{
+  noBtn.style.position="absolute";
+  noBtn.style.left=Math.random()*220+"px";
+  noBtn.style.top=Math.random()*140+"px";
+};
+
+/* ===== YES -> Finale ===== */
 function yes(){
- next(5);
- confetti({particleCount:200,spread:90});
-
- typeLetter();
- startCountdown();
+  document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
+  document.getElementById("s7").classList.remove("hidden");
+  confetti({ particleCount:260, spread:100 });
+  fireworks();
+  typeLetter();
+  countdown();
 }
 
-/* Typing Love Letter */
-let text=`You are my safe place,
-my happiness,
-my favorite person.
+/* ===== Fireworks Loop ===== */
+function fireworks(){
+  const id=setInterval(()=>{
+    confetti({
+      particleCount: 90,
+      spread: 160,
+      origin:{ x:Math.random(), y:Math.random()*0.8 }
+    });
+  },900);
+  setTimeout(()=>clearInterval(id), 9000);
+}
 
-Every moment with you feels magical.
-I can't wait to create thousands of memories with you. ❤️`;
+/* ===== Typing Letter ===== */
+// 🔧 Customize: your love letter
+const LETTER = `You are my comfort, my happiness, and my favorite place to be.
+Every laugh with you feels like a miracle I get to keep.
+I promise to choose you, celebrate you, and stand by you —
+through every sunrise, every storm, every ordinary moment that becomes extraordinary with you. ❤️`;
 
 function typeLetter(){
- let i=0;
- let el=document.getElementById("letter");
-
- let inter=setInterval(()=>{
-  el.innerHTML+=text[i];
-  i++;
-  if(i>=text.length) clearInterval(inter);
- },40);
+  const el=document.getElementById("letter");
+  let i=0;
+  const t=setInterval(()=>{
+    el.innerHTML += LETTER[i] || "";
+    i++;
+    if(i>=LETTER.length) clearInterval(t);
+  },38);
 }
 
-/* Countdown */
-function startCountdown(){
- let valDate=new Date("Feb 14 2026 00:00:00").getTime();
-
- setInterval(()=>{
-  let now=new Date().getTime();
-  let diff=valDate-now;
-
-  let d=Math.floor(diff/(1000*60*60*24));
-  let h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-  let m=Math.floor((diff%(1000*60*60))/(1000*60));
-
-  document.getElementById("timer").innerText=
-  `Our Day Starts In ${d}d ${h}h ${m}m ❤️`;
- },1000);
+/* ===== Countdown to Feb 14, 2026 ===== */
+function countdown(){
+  const target=new Date("Feb 14 2026 00:00:00").getTime();
+  setInterval(()=>{
+    const now=Date.now();
+    const diff=target-now;
+    if(diff<=0){
+      document.getElementById("cd").textContent="It’s Our Day ❤️";
+      return;
+    }
+    const d=Math.floor(diff/(1000*60*60*24));
+    const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m=Math.floor((diff%(1000*60*60))/(1000*60));
+    document.getElementById("cd").textContent=`Our Day Starts In ${d}d ${h}h ${m}m ❤️`;
+  },1000);
 }
-
 </script>
-
 </body>
 </html>
