@@ -3,408 +3,871 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Our Legendary Love ❤️</title>
+<title>Our Love Story ❤️</title>
 
-<!-- Confetti -->
+<!-- Confetti Library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
-:root{
-  --pink:#ff2d6b;
-  --rose:#ff9ac7;
-  --glass: rgba(255,255,255,0.08);
-  --bg1:#120015;
-  --bg2:#000;
+:root {
+  --pink: #ff2d6b;
+  --rose: #ff9ac7;
+  --glass: rgba(255, 255, 255, 0.08);
+  --bg1: #120015;
+  --bg2: #000;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0; font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-  color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: radial-gradient(ellipse at bottom, var(--bg1), var(--bg2));
-  overflow:hidden;
+  overflow-x: hidden;
 }
 
-/* ===== Ambient ===== */
-.star{ position:fixed; width:2px; height:2px; background:#fff; opacity:.7; animation:tw 3s infinite alternate; }
-@keyframes tw{ from{opacity:.2} to{opacity:1} }
+/* ===== Ambient Effects ===== */
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  opacity: 0.7;
+  animation: twinkle 3s infinite alternate;
+  pointer-events: none;
+}
 
-.heart{ position:fixed; bottom:-30px; font-size:22px; opacity:.9; animation:float 8s linear infinite; }
-@keyframes float{ from{transform:translateY(0)} to{transform:translateY(-115vh)} }
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+.heart {
+  position: fixed;
+  bottom: -30px;
+  font-size: 22px;
+  opacity: 0.9;
+  animation: float 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-115vh); }
+}
 
 /* ===== Layout ===== */
-.shell{ width:min(520px, 94vw); position:relative; }
-.card{
-  background: var(--glass); backdrop-filter: blur(12px);
-  border-radius:28px; padding:22px; box-shadow: 0 0 60px rgba(255,0,120,.2);
-  text-align:center;
+.shell {
+  width: min(520px, 94vw);
+  position: relative;
+  z-index: 10;
 }
-.hidden{ display:none; }
 
-h1,h2,h3{ margin:.4em 0 .2em }
-p{ opacity:.95 }
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-radius: 28px;
+  padding: 32px 22px;
+  box-shadow: 0 0 60px rgba(255, 0, 120, 0.2);
+  text-align: center;
+}
 
-button{
-  border:none; border-radius:999px; padding:12px 22px; margin-top:10px;
-  color:#fff; font-weight:700; letter-spacing:.3px; cursor:pointer;
+.hidden {
+  display: none !important;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0.4em 0 0.2em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0.4em 0 0.2em;
+}
+
+p {
+  opacity: 0.95;
+  line-height: 1.6;
+  margin: 0.8em 0;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  margin: 10px 5px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
   background: linear-gradient(45deg, #ff2d6b, #ff8ac0);
-  transition:.2s transform, .2s filter, .2s box-shadow;
-  box-shadow: 0 8px 24px rgba(255,45,107,.35);
-}
-button:hover{ transform: translateY(-1px) scale(1.03); filter:brightness(1.05) }
-
-.row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap }
-
-.pill{
-  display:inline-block; padding:6px 10px; border-radius:999px;
-  background:rgba(255,255,255,.12); font-size:.85rem; margin-bottom:6px;
+  transition: 0.2s transform, 0.2s filter, 0.2s box-shadow;
+  box-shadow: 0 8px 24px rgba(255, 45, 107, 0.35);
 }
 
-/* ===== Music / Voice ===== */
-.toolbar{
-  position:fixed; top:14px; right:14px; display:flex; gap:10px; z-index:99;
-}
-.tool{
-  width:42px; height:42px; border-radius:50%; background:#fff; color:#111;
-  display:grid; place-items:center; cursor:pointer; font-size:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,.25);
+button:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.05);
 }
 
-/* ===== Chapters Nav ===== */
-.navdots{ margin-top:8px }
-.dot{
-  display:inline-block; width:8px; height:8px; border-radius:50%;
-  background:rgba(255,255,255,.35); margin:0 3px;
-}
-.dot.active{ background:#fff }
-
-/* ===== 3D Photo Cube ===== */
-.scene{ width:220px; height:220px; margin:16px auto; perspective:800px; }
-.cube{
-  width:100%; height:100%; position:relative; transform-style:preserve-3d;
-  animation:spin 14s infinite linear;
-}
-@keyframes spin{ from{ transform: rotateX(-10deg) rotateY(0deg)} to{ transform: rotateX(-10deg) rotateY(360deg)} }
-.face{
-  position:absolute; width:220px; height:220px; border-radius:18px; overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,.35);
-}
-.face img{ width:100%; height:100%; object-fit:cover }
-
-/* Position faces */
-.f1{ transform: translateZ(110px) }
-.f2{ transform: rotateY(180deg) translateZ(110px) }
-.f3{ transform: rotateY(90deg) translateZ(110px) }
-.f4{ transform: rotateY(-90deg) translateZ(110px) }
-.f5{ transform: rotateX(90deg) translateZ(110px) }
-.f6{ transform: rotateX(-90deg) translateZ(110px) }
-
-/* ===== Secret Lock ===== */
-.lock{
-  display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin:10px auto; max-width:260px;
-}
-.lock input{
-  text-align:center; font-size:1.2rem; border-radius:10px; border:none; padding:10px;
-  background:rgba(255,255,255,.15); color:#fff;
+button:active {
+  transform: translateY(0) scale(0.98);
 }
 
-/* ===== Hug/Kiss ===== */
-.tapzone{
-  margin:10px auto; width:180px; height:180px; border-radius:50%;
-  background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.15), rgba(255,45,107,.25));
-  display:grid; place-items:center; font-size:54px; cursor:pointer;
-  box-shadow: inset 0 0 30px rgba(255,255,255,.12), 0 10px 30px rgba(255,45,107,.3);
+.row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+/* ===== Music Control ===== */
+.toolbar {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 99;
+}
+
+.tool {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: 0.2s;
+}
+
+.tool:hover {
+  transform: scale(1.1);
+}
+
+.tool:active {
+  transform: scale(0.95);
+}
+
+/* ===== Navigation Dots ===== */
+.navdots {
+  margin-top: 20px;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  margin: 0 4px;
+  transition: 0.3s;
+}
+
+.dot.active {
+  background: #fff;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ===== Photo Gallery ===== */
+.gallery-container {
+  margin: 20px auto;
+  max-width: 350px;
+  position: relative;
+}
+
+.photo-frame {
+  width: 100%;
+  height: 350px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(255, 45, 107, 0.4);
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.photo-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.photo-slide.active {
+  opacity: 1;
+}
+
+.photo-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gallery-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.gallery-dot.active {
+  background: var(--pink);
+  width: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px var(--pink);
+}
+
+.photo-caption {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--rose);
+  font-style: italic;
+  min-height: 24px;
+}
+
+/* ===== Love Quiz ===== */
+.quiz-container {
+  margin: 20px 0;
+}
+
+.quiz-question {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: var(--rose);
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.quiz-option {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 16px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.quiz-option:hover {
+  background: rgba(255, 138, 192, 0.2);
+  border-color: var(--rose);
+  transform: translateX(8px);
+  box-shadow: 0 8px 20px rgba(255, 45, 107, 0.3);
+}
+
+.quiz-option:active {
+  transform: translateX(8px) scale(0.98);
+}
+
+#quizMsg {
+  margin-top: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 24px;
+}
+
+/* ===== Hug/Kiss Tap Zone ===== */
+.tapzone {
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.15), rgba(255, 45, 107, 0.25));
+  display: grid;
+  place-items: center;
+  font-size: 64px;
+  cursor: pointer;
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.12), 0 10px 30px rgba(255, 45, 107, 0.3);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.tapzone:hover {
+  transform: scale(1.05);
+}
+
+.tapzone:active {
+  transform: scale(0.95);
+}
+
+/* ===== Love Meter ===== */
+.meter {
+  width: 100%;
+  height: 28px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff2d6b, #ff90c2);
+  transition: width 2s ease-out;
+  box-shadow: 0 0 20px rgba(255, 45, 107, 0.8);
 }
 
 /* ===== Proposal Ring ===== */
-.ring-wrap{ margin:16px auto; width:160px; height:160px; position:relative; }
-.ring{
-  position:absolute; inset:0; border-radius:50%;
-  border:4px solid rgba(255,255,255,.25);
+.ring-wrap {
+  margin: 20px auto;
+  width: 180px;
+  height: 180px;
+  position: relative;
 }
-.ring.glow{
-  border-color:#ff8ac0; box-shadow: 0 0 30px #ff8ac0, inset 0 0 30px rgba(255,138,192,.4);
-  animation:pulse 1.6s infinite;
-}
-@keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 
-/* ===== Love Meter ===== */
-.meter{ width:100%; height:22px; border-radius:999px; background:#2a2a2a; overflow:hidden; }
-.fill{ height:100%; width:0%; background:linear-gradient(90deg,#ff2d6b,#ff90c2); transition:2s; }
+.ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.25);
+}
+
+.ring.glow {
+  border-color: #ff8ac0;
+  box-shadow: 0 0 30px #ff8ac0, inset 0 0 30px rgba(255, 138, 192, 0.4);
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.ring-emoji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+}
 
 /* ===== Letter ===== */
-.letter{
-  min-height:120px; background:rgba(255,255,255,.1); border-radius:16px; padding:12px; font-style:italic;
+.letter {
+  min-height: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  font-style: italic;
+  line-height: 1.7;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ===== Countdown ===== */
-.countdown{ color:var(--rose); margin-top:8px }
+.countdown {
+  color: var(--rose);
+  margin-top: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 
-/* Small */
-.small{ font-size:.9rem; opacity:.85 }
+.small {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* ===== Cute GIF Display ===== */
+.cute-gif {
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(255, 45, 107, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.cute-gif img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🔧 Customize: Names / Media -->
+<!-- Background Music -->
 <audio id="bgMusic" loop>
-  <!-- 🔧 Replace with your couple song URL -->
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9a42d2.mp3" type="audio/mp3" />
 </audio>
 
-<audio id="voiceNote">
-  <!-- 🔧 Replace with your recorded voice message URL -->
-  <source src="" type="audio/mp3" />
-</audio>
-
+<!-- Music Control -->
 <div class="toolbar">
-  <div class="tool" onclick="toggleMusic()">🎵</div>
-  <div class="tool" onclick="playVoice()">🎙️</div>
+  <div class="tool" onclick="toggleMusic()" title="Toggle Music">🎵</div>
 </div>
 
 <div class="shell">
   <div class="card">
 
-    <!-- ===== Stage 1: Intro ===== -->
+    <!-- ===== Stage 1: Welcome ===== -->
     <section id="s1">
-      <span class="pill">Chapter 0</span>
-      <h1>Hi, My Chello ❤️</h1>
-      <p>Tonight, the sky holds a story… ours.</p>
-      <div class="row">
-        <button onclick="go(1)">Enter Our Story ✨</button>
+      <span class="pill">💝 Welcome</span>
+      <h1>Hi, My Love ❤️</h1>
+      <div class="cute-gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJoZmRqbDhkM3p0N3JyZnJzNWN1Mnd5YjR0ZnN1eGJ1cnE3NGNqYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6Zt6ML6BklcajjsA/giphy.gif" alt="Cute hearts" />
       </div>
-      <div class="navdots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <p>Tonight, under the stars, I have something special to share with you...</p>
+      <div class="row">
+        <button onclick="goToStage(2)">Open My Heart ✨</button>
+      </div>
+      <div class="navdots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
-    <!-- ===== Stage 2: Chapters ===== -->
+    <!-- ===== Stage 2: First Meeting ===== -->
     <section id="s2" class="hidden">
-      <span class="pill">Chapter 1</span>
+      <span class="pill">💫 Chapter 1</span>
       <h2>The Day I Met You</h2>
-      <p class="small">Everything got a little brighter… and I didn’t even know why yet.</p>
-      <div class="row">
-        <button onclick="go(2)">Next Chapter</button>
+      <div class="cute-gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHc3N2R5cDR0cjhtZHVkZGlvODI5aTR3b2VzNzBnc2o1c2hyZjB6ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUOrw5LIxb8S9X1LGg/giphy.gif" alt="Butterflies" />
       </div>
-      <div class="navdots"><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <p class="small">Everything changed in that moment. My world got a little brighter, my heart a little fuller... and I didn't even know why yet.</p>
+      <div class="row">
+        <button onclick="goToStage(3)">Next Chapter 💕</button>
+      </div>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
-    <!-- ===== Stage 3: 3D Photo Cube ===== -->
+    <!-- ===== Stage 3: Photo Gallery ===== -->
     <section id="s3" class="hidden">
-      <span class="pill">Our Memories 📸</span>
+      <span class="pill">📸 Our Memories</span>
       <h2>Moments I Keep Forever</h2>
+      <p class="small">Every photo tells a story of us.</p>
 
-      <div class="scene">
-        <div class="cube">
-          <!-- 🔧 Replace with real photos -->
-          <div class="face f1"><img src="https://picsum.photos/400/400?1" /></div>
-          <div class="face f2"><img src="https://picsum.photos/400/400?2" /></div>
-          <div class="face f3"><img src="https://picsum.photos/400/400?3" /></div>
-          <div class="face f4"><img src="https://picsum.photos/400/400?4" /></div>
-          <div class="face f5"><img src="https://picsum.photos/400/400?5" /></div>
-          <div class="face f6"><img src="https://picsum.photos/400/400?6" /></div>
+      <div class="gallery-container">
+        <div class="photo-frame">
+          <div class="photo-slide active">
+            <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=600&h=700&fit=crop" alt="Cute couple moment" />
+          </div>
+          <div class="photo-slide">
+            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&h=700&fit=crop" alt="Heart hands together" />
+          </div>
+          <div class="photo-slide">
+            <img src="https://images.unsplash.com/photo-1522057782-13f2fddf3c5f?w=600&h=700&fit=crop" alt="Sunset romance" />
+          </div>
+          <div class="photo-slide">
+            <img src="https://images.unsplash.com/photo-1525872605284-3ccbb1dfc968?w=600&h=700&fit=crop" alt="Happy together" />
+          </div>
+          <div class="photo-slide">
+            <img src="https://images.unsplash.com/photo-1492176273113-2d51f47b23b0?w=600&h=700&fit=crop" alt="Love and laughter" />
+          </div>
+          <div class="photo-slide">
+            <img src="https://images.unsplash.com/photo-1606491048359-e3f3d3e83c2f?w=600&h=700&fit=crop" alt="Forever moments" />
+          </div>
+        </div>
+        <div class="photo-caption" id="photoCaption">Our first adventure together 💕</div>
+        <div class="gallery-nav">
+          <span class="gallery-dot active" onclick="showPhoto(0)"></span>
+          <span class="gallery-dot" onclick="showPhoto(1)"></span>
+          <span class="gallery-dot" onclick="showPhoto(2)"></span>
+          <span class="gallery-dot" onclick="showPhoto(3)"></span>
+          <span class="gallery-dot" onclick="showPhoto(4)"></span>
+          <span class="gallery-dot" onclick="showPhoto(5)"></span>
         </div>
       </div>
 
-      <button onclick="go(3)">Keep Going 💞</button>
-      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <button onclick="goToStage(4)">Keep Going 💞</button>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
-    <!-- ===== Stage 4: Secret Unlock ===== -->
+    <!-- ===== Stage 4: Love Quiz ===== -->
     <section id="s4" class="hidden">
-      <span class="pill">Secret Lock 🔐</span>
-      <h2>Enter Our Special Date</h2>
-      <p class="small">Hint: The day our story truly began (DDMM)</p>
+      <span class="pill">💭 Love Quiz</span>
+      <h2>How Well Do You Know Me?</h2>
+      <div class="cute-gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTI1aHdmZWFwaG1oZWQ3ejUzNW85MzBtaXdkZmRlMWRjcDNsMWV0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT77XTpyEzJ4OJO06c/giphy.gif" alt="Thinking" />
+      </div>
+      <p class="small">Answer this question to unlock the next chapter...</p>
 
-      <div class="lock">
-        <input maxlength="1" id="l1" />
-        <input maxlength="1" id="l2" />
-        <input maxlength="1" id="l3" />
-        <input maxlength="1" id="l4" />
+      <div class="quiz-container">
+        <h3 class="quiz-question">What's my favorite thing about you?</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkAnswer(1)">Your smile that lights up my world ✨</button>
+          <button class="quiz-option" onclick="checkAnswer(2)">Your kind heart and gentle soul 💖</button>
+          <button class="quiz-option" onclick="checkAnswer(3)">Everything about you 🌟</button>
+          <button class="quiz-option" onclick="checkAnswer(4)">The way you make me feel loved 💕</button>
+        </div>
       </div>
 
-      <div class="row">
-        <button onclick="checkLock()">Unlock ❤️</button>
-      </div>
-      <div id="lockMsg" class="small"></div>
+      <div id="quizMsg" class="small"></div>
 
-      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
-    <!-- ===== Stage 5: Hug/Kiss Interaction ===== -->
+    <!-- ===== Stage 5: Hugs & Kisses ===== -->
     <section id="s5" class="hidden">
-      <span class="pill">Send Me Love 🫶</span>
+      <span class="pill">🫶 Send Love</span>
       <h2>Tap To Send Hugs & Kisses</h2>
-      <div class="tapzone" onclick="burst()">💋</div>
-      <p class="small">Every tap sends me a hug across the universe.</p>
-      <button onclick="go(5)">One More Thing…</button>
+      <div class="tapzone" onclick="sendLove()">💋</div>
+      <p class="small">Every tap sends a hug across the universe, straight to your heart.</p>
+      <p id="tapCounter" class="small" style="color: var(--rose); font-weight: bold;">Taps: 0</p>
+      <button onclick="goToStage(6)">One More Thing… 💫</button>
 
-      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
-    <!-- ===== Stage 6: Love Meter + Proposal ===== -->
+    <!-- ===== Stage 6: Love Meter & Proposal ===== -->
     <section id="s6" class="hidden">
-      <span class="pill">Compatibility 🧸</span>
+      <span class="pill">🧸 Compatibility</span>
       <h2>Calculating Our Love Level…</h2>
+      <div class="cute-gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2F5dDdtN2V3cnB3ZGdrZnZmcnBjanBkaGF1cG9ramJhbWM1ZTYzcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMt1VVNkHV2PaE/giphy.gif" alt="Loading hearts" />
+      </div>
       <div class="meter"><div class="fill" id="meter"></div></div>
       <div class="row">
-        <button onclick="meterThenProposal()">Reveal Result</button>
+        <button onclick="runMeter()">Reveal Result 💖</button>
       </div>
 
       <div id="proposal" class="hidden">
         <div class="ring-wrap">
           <div class="ring"></div>
           <div class="ring glow"></div>
+          <div class="ring-emoji">💍</div>
         </div>
         <h2>Will You Be My Valentine? 🌹</h2>
+        <p class="small">I promise to love you today, tomorrow, and always.</p>
         <div class="row">
-          <button onclick="yes()">YES 😍</button>
-          <button id="noBtn">No 🥺</button>
+          <button onclick="sayYes()">YES! 😍</button>
+          <button id="noBtn" onmouseover="runAway()">No 🥺</button>
         </div>
       </div>
 
-      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+        <span class="dot"></span>
+      </div>
     </section>
 
     <!-- ===== Stage 7: Finale ===== -->
     <section id="s7" class="hidden">
       <span class="pill">Forever ❤️</span>
       <h2>You Make My World Beautiful</h2>
+      <div class="cute-gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGp6Nm9vb3NqZHRydTZjZWdlYmR6M2h3NWJ3Zm1wdWJrbmF4anFhbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26u4cqiYI30juCOGY/giphy.gif" alt="Beautiful hearts" />
+      </div>
       <div class="letter" id="letter"></div>
-      <div class="countdown" id="cd"></div>
-      <p class="small">I choose you. Today. Tomorrow. Always.</p>
+      <div class="countdown" id="countdown"></div>
+      <p class="small">I choose you. Today. Tomorrow. Always. 💕</p>
 
-      <div class="navdots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
+      <div class="navdots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot active"></span>
+      </div>
     </section>
 
   </div>
 </div>
 
 <script>
-/* ===== Ambient Stars & Hearts ===== */
-for(let i=0;i<90;i++){
-  const s=document.createElement("div");
-  s.className="star";
-  s.style.left=Math.random()*100+"vw";
-  s.style.top=Math.random()*100+"vh";
-  document.body.appendChild(s);
-}
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerText=["❤️","💖","💘","💕"][Math.floor(Math.random()*4)];
-  h.style.left=Math.random()*100+"vw";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
-},700);
-
-/* ===== Stage Nav ===== */
-function go(n){
-  document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
-  document.getElementById("s"+(n+1)).classList.remove("hidden");
+// ===== Create Ambient Stars =====
+for (let i = 0; i < 90; i++) {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.top = Math.random() * 100 + "vh";
+  star.style.animationDelay = Math.random() * 3 + "s";
+  document.body.appendChild(star);
 }
 
-/* ===== Music / Voice ===== */
-function toggleMusic(){
-  const m=document.getElementById("bgMusic");
-  m.paused?m.play():m.pause();
-}
-function playVoice(){
-  const v=document.getElementById("voiceNote");
-  if(!v.src){ alert("Add your voice note URL first ❤️"); return; }
-  v.play();
+// ===== Create Floating Hearts =====
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = ["❤️", "💖", "💘", "💕"][Math.floor(Math.random() * 4)];
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (6 + Math.random() * 4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 10000);
+}, 1000);
+
+// ===== Navigation =====
+function goToStage(stage) {
+  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+  document.getElementById("s" + stage).classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ===== Secret Lock ===== */
-// 🔧 Customize: your special date in DDMM (e.g., 0709)
-const SECRET = "0709";
-function checkLock(){
-  const code = ["l1","l2","l3","l4"].map(id=>document.getElementById(id).value).join("");
-  const msg = document.getElementById("lockMsg");
-  if(code === SECRET){
-    msg.textContent="Unlocked 💖";
-    setTimeout(()=>go(4),700);
-  }else{
-    msg.textContent="Try again… our date deserves remembering 😌";
+// ===== Music Control =====
+function toggleMusic() {
+  const music = document.getElementById("bgMusic");
+  if (music.paused) {
+    music.play();
+  } else {
+    music.pause();
   }
 }
 
-/* ===== Hug/Kiss Burst ===== */
-function burst(){
-  confetti({ particleCount: 90, spread: 80, origin:{y:.7} });
+// ===== Photo Gallery =====
+let currentPhoto = 0;
+const photoCaptions = [
+  "Our first adventure together 💕",
+  "Making memories that last forever ✨",
+  "Every moment with you is magical 🌟",
+  "You and me against the world 💖",
+  "My favorite place is next to you 🫶",
+  "Together is my favorite place to be 💘"
+];
+
+function showPhoto(index) {
+  const slides = document.querySelectorAll('.photo-slide');
+  const dots = document.querySelectorAll('.gallery-dot');
+  
+  slides[currentPhoto].classList.remove('active');
+  dots[currentPhoto].classList.remove('active');
+  
+  currentPhoto = index;
+  
+  slides[currentPhoto].classList.add('active');
+  dots[currentPhoto].classList.add('active');
+  
+  document.getElementById('photoCaption').textContent = photoCaptions[currentPhoto];
 }
 
-/* ===== Meter -> Proposal ===== */
-function meterThenProposal(){
-  const fill=document.getElementById("meter");
-  fill.style.width="100%";
-  setTimeout(()=>{
+// Auto-advance gallery
+setInterval(() => {
+  const nextPhoto = (currentPhoto + 1) % 6;
+  showPhoto(nextPhoto);
+}, 4000);
+
+// ===== Love Quiz =====
+function checkAnswer(answer) {
+  const msg = document.getElementById("quizMsg");
+  
+  // Any answer is correct because everything about them is true!
+  msg.style.color = "#4ade80";
+  msg.textContent = "That's right! ✨ (But honestly, all answers are true! 😊)";
+  
+  confetti({ 
+    particleCount: 120, 
+    spread: 80, 
+    origin: { y: 0.6 } 
+  });
+  
+  setTimeout(() => goToStage(5), 1500);
+}
+
+// ===== Hugs & Kisses Counter =====
+let tapCount = 0;
+
+function sendLove() {
+  tapCount++;
+  document.getElementById("tapCounter").textContent = `Taps: ${tapCount} 💕`;
+  confetti({
+    particleCount: 50,
+    spread: 60,
+    origin: { y: 0.6 }
+  });
+}
+
+// ===== Love Meter =====
+function runMeter() {
+  const meter = document.getElementById("meter");
+  meter.style.width = "100%";
+  
+  setTimeout(() => {
     document.getElementById("proposal").classList.remove("hidden");
-  },1800);
-}
-
-/* ===== Evasive NO ===== */
-const noBtn=document.getElementById("noBtn");
-noBtn.onmouseover=()=>{
-  noBtn.style.position="absolute";
-  noBtn.style.left=Math.random()*220+"px";
-  noBtn.style.top=Math.random()*140+"px";
-};
-
-/* ===== YES -> Finale ===== */
-function yes(){
-  document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
-  document.getElementById("s7").classList.remove("hidden");
-  confetti({ particleCount:260, spread:100 });
-  fireworks();
-  typeLetter();
-  countdown();
-}
-
-/* ===== Fireworks Loop ===== */
-function fireworks(){
-  const id=setInterval(()=>{
     confetti({
-      particleCount: 90,
-      spread: 160,
-      origin:{ x:Math.random(), y:Math.random()*0.8 }
+      particleCount: 150,
+      spread: 100,
+      origin: { y: 0.5 }
     });
-  },900);
-  setTimeout(()=>clearInterval(id), 9000);
+  }, 2200);
 }
 
-/* ===== Typing Letter ===== */
-// 🔧 Customize: your love letter
-const LETTER = `You are my comfort, my happiness, and my favorite place to be.
-Every laugh with you feels like a miracle I get to keep.
-I promise to choose you, celebrate you, and stand by you —
-through every sunrise, every storm, every ordinary moment that becomes extraordinary with you. ❤️`;
-
-function typeLetter(){
-  const el=document.getElementById("letter");
-  let i=0;
-  const t=setInterval(()=>{
-    el.innerHTML += LETTER[i] || "";
-    i++;
-    if(i>=LETTER.length) clearInterval(t);
-  },38);
+// ===== Evasive No Button =====
+function runAway() {
+  const noBtn = document.getElementById("noBtn");
+  const card = document.querySelector(".card");
+  const cardRect = card.getBoundingClientRect();
+  
+  const maxX = cardRect.width - 120;
+  const maxY = cardRect.height - 80;
+  
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 }
 
-/* ===== Countdown to Feb 14, 2026 ===== */
-function countdown(){
-  const target=new Date("Feb 14 2026 00:00:00").getTime();
-  setInterval(()=>{
-    const now=Date.now();
-    const diff=target-now;
-    if(diff<=0){
-      document.getElementById("cd").textContent="It’s Our Day ❤️";
-      return;
+// ===== Say Yes =====
+function sayYes() {
+  goToStage(7);
+  
+  // Big celebration
+  confetti({
+    particleCount: 300,
+    spread: 160,
+    origin: { y: 0.5 }
+  });
+  
+  // Continuous fireworks
+  const fireworkInterval = setInterval(() => {
+    confetti({
+      particleCount: 100,
+      spread: 120,
+      origin: { x: Math.random(), y: Math.random() * 0.5 }
+    });
+  }, 800);
+  
+  setTimeout(() => clearInterval(fireworkInterval), 8000);
+  
+  // Type the letter
+  typeLetter();
+  
+  // Start countdown
+  updateCountdown();
+}
+
+// ===== Type Letter Effect =====
+function typeLetter() {
+  const message = "From the moment I met you, I knew my life would never be the same. You bring light to my darkest days, joy to my simplest moments, and love to every corner of my heart. You are my best friend, my partner, my everything. Thank you for choosing me, today and every day. I love you more than words can say. ❤️";
+  
+  const letterEl = document.getElementById("letter");
+  let i = 0;
+  
+  const typeInterval = setInterval(() => {
+    if (i < message.length) {
+      letterEl.textContent += message.charAt(i);
+      i++;
+    } else {
+      clearInterval(typeInterval);
     }
-    const d=Math.floor(diff/(1000*60*60*24));
-    const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const m=Math.floor((diff%(1000*60*60))/(1000*60));
-    document.getElementById("cd").textContent=`Our Day Starts In ${d}d ${h}h ${m}m ❤️`;
-  },1000);
+  }, 30);
 }
+
+// ===== Countdown Timer =====
+function updateCountdown() {
+  const countdownEl = document.getElementById("countdown");
+  
+  // Set your special date here (year, month-1, day, hour, minute)
+  const specialDate = new Date(2026, 1, 14, 0, 0, 0); // February 14, 2026
+  
+  function calculate() {
+    const now = new Date();
+    const diff = specialDate - now;
+    
+    if (diff > 0) {
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      countdownEl.textContent = `Our next Valentine's Day: ${days}d ${hours}h ${minutes}m ${seconds}s ✨`;
+    } else {
+      countdownEl.textContent = "Every day with you is Valentine's Day! ❤️";
+    }
+  }
+  
+  calculate();
+  setInterval(calculate, 1000);
+}
+
+// Auto-play music when user interacts (browsers require user interaction)
+document.addEventListener('click', function initAudio() {
+  const music = document.getElementById("bgMusic");
+  if (music.paused) {
+    music.play().catch(() => {}); // Silently fail if autoplay is blocked
+  }
+  document.removeEventListener('click', initAudio);
+}, { once: true });
 </script>
+
 </body>
 </html>
