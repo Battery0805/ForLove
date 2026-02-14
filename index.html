@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Little Love Page ❤️</title>
+  <title>Our Cute Love Games ❤️</title>
 
   <style>
     * {
@@ -14,320 +14,309 @@
 
     body {
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: #fff5f8;
+      background: linear-gradient(135deg, #fff5f8 0%, #ffeef5 100%);
       color: #333;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 16px;
     }
 
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
     .card {
-      width: min(480px, 100%);
       background: #ffffff;
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 24px 20px 28px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
       text-align: center;
     }
 
     h1, h2 {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
-    h1 {
-      font-size: 1.8rem;
-    }
-
-    h2 {
-      font-size: 1.3rem;
-    }
+    h1 { font-size: 1.9rem; color: #d81b60; }
+    h2 { font-size: 1.4rem; }
 
     p {
-      margin: 10px 0;
+      margin: 12px 0;
       line-height: 1.6;
+      color: #555;
     }
 
     .pill {
       display: inline-block;
-      padding: 4px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
       background: #ffe0eb;
       color: #d81b60;
-      font-size: 0.8rem;
-      margin-bottom: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
     }
 
-    .cute-img,
-    .cute-gif {
-      width: 190px;
-      height: 190px;
-      margin: 14px auto;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid #ffd1e1;
-    }
-
-    .cute-img img,
-    .cute-gif img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .score {
+      font-weight: 700;
+      color: #d81b60;
+      font-size: 1.1rem;
+      margin: 8px 0;
     }
 
     button {
       border: none;
       border-radius: 999px;
-      padding: 10px 22px;
-      margin: 8px 4px;
+      padding: 12px 24px;
+      margin: 6px;
       background: #ff2d6b;
       color: #ffffff;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.1s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 45, 107, 0.3);
     }
 
     button:hover {
       background: #e1205a;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 45, 107, 0.4);
     }
 
     button:active {
       transform: translateY(0);
     }
 
-    .row {
+    .hidden { display: none; }
+
+    /* Game Styles */
+    .tapzone {
+      width: 220px;
+      height: 220px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff90c2, #ff2d6b);
       display: flex;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+      font-size: 4rem;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(255, 45, 107, 0.3);
+      transition: transform 0.15s ease;
+      user-select: none;
     }
 
-    .hidden {
-      display: none;
+    .tapzone:hover { transform: scale(1.05); }
+    .tapzone:active { transform: scale(0.98); }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .quiz-option {
+      background: #fff5f8;
+      border: 2px solid #ffe0eb;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .quiz-option:hover {
+      background: #ffe0eb;
+      border-color: #ff2d6b;
+      transform: translateX(6px);
+    }
+
+    .quiz-option.correct {
+      background: #d4edda;
+      border-color: #28a745;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 320px;
+      margin: 20px auto;
+    }
+
+    .memory-card {
+      width: 70px;
+      height: 70px;
+      border-radius: 12px;
+      background: #ffe0eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .memory-card.flipped {
+      background: #ff2d6b;
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .memory-card.matched {
+      background: #28a745;
+      color: white;
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: #f0f0f0;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff2d6b, #ff90c2);
+      width: 0%;
+      transition: width 1s ease;
     }
 
     .navdots {
-      margin-top: 16px;
+      margin-top: 20px;
     }
 
     .dot {
       display: inline-block;
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #ffd6e5;
-      margin: 0 3px;
+      margin: 0 4px;
     }
 
     .dot.active {
-      width: 18px;
-      border-radius: 4px;
       background: #ff2d6b;
+      width: 20px;
+      border-radius: 5px;
     }
 
-    .small {
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    /* Tiny love meter – very simple */
-    .meter {
-      width: 100%;
-      height: 18px;
-      border-radius: 999px;
-      background: #ffe5f0;
-      overflow: hidden;
-      margin: 14px 0;
-    }
-
-    .fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #ff2d6b, #ff90c2);
-      transition: width 1.5s ease-out;
-    }
-
-    .letter {
-      margin-top: 16px;
-      text-align: left;
-      background: #fff7fb;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      border: 1px solid #ffe0ef;
-    }
-
-    .tap-text {
-      font-size: 1.8rem;
-      margin: 10px 0;
-    }
-
-    .countdown {
-      margin-top: 10px;
-      font-size: 0.95rem;
+    .final-message {
+      font-size: 1.1rem;
       color: #d81b60;
-      font-weight: 500;
+      font-weight: 600;
+      margin: 20px 0;
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <!-- Stage 1 -->
-    <section id="s1">
-      <span class="pill">💝 Hi Love</span>
-      <h1>Happy Valentine's Day ❤️</h1>
+  <div class="container">
+    <div class="card">
+      <!-- Stage 1: Welcome -->
+      <section id="s1">
+        <span class="pill">💝 Play Time!</span>
+        <h1>Cute Love Games ❤️</h1>
+        <p>Let's play some sweet games together and see how much love we have!</p>
+        <p class="score">Love Score: <span id="totalScore">0</span> 💕</p>
+        <button onclick="goTo(2)">Start Games ✨</button>
+        <div class="navdots">
+          <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </section>
 
-      <div class="cute-gif">
-        <!-- Replace with any cute hearts GIF -->
-        <img src="https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif" alt="Cute hearts" />
-      </div>
+      <!-- Stage 2: Tap Love -->
+      <section id="s2" class="hidden">
+        <span class="pill">🫶 Game 1</span>
+        <h2>Tap Hearts!</h2>
+        <p>Tap as many times as you love me 💋</p>
+        <div class="tapzone" onclick="tapLove()">💕</div>
+        <p class="score">Taps: <span id="tapCount">0</span></p>
+        <div class="progress"><div class="progress-fill" id="tapProgress"></div></div>
+        <button onclick="nextGame(1, 20)">Next Game →</button>
+        <div class="navdots">
+          <span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </section>
 
-      <p>Today I just wanted to give you a tiny corner of the internet that belongs only to us.</p>
+      <!-- Stage 3: Love Quiz -->
+      <section id="s3" class="hidden">
+        <span class="pill">💭 Game 2</span>
+        <h2>How Well Do You Know Me?</h2>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="quizAnswer(1, 'Your smile!')">Your smile lights up my day ✨</div>
+          <div class="quiz-option" onclick="quizAnswer(2, 'Your kindness!')">Your kind heart 💖</div>
+          <div class="quiz-option" onclick="quizAnswer(3, 'Everything!')">Everything about you! 🌟</div>
+        </div>
+        <p id="quizMsg" class="score"></p>
+        <div class="navdots">
+          <span class="dot"></span><span class="dot"></span><span class="dot active"></span><span class="dot"></span>
+        </div>
+      </section>
 
-      <div class="row">
-        <button onclick="goTo(2)">Next ✨</button>
-      </div>
+      <!-- Stage 4: Memory Match -->
+      <section id="s4" class="hidden">
+        <span class="pill">🧠 Game 3</span>
+        <h2>Match Our Hearts!</h2>
+        <p>Find matching hearts to score points 💖</p>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <p class="score">Matches: <span id="matchCount">0</span>/5</p>
+        <div class="progress"><div class="progress-fill" id="matchProgress"></div></div>
+        <button onclick="resetMemory()">New Game</button>
+        <button onclick="finishGames()">Finish All Games! 🎉</button>
+        <div class="navdots">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot active"></span>
+        </div>
+      </section>
 
-      <div class="navdots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-    </section>
-
-    <!-- Stage 2 -->
-    <section id="s2" class="hidden">
-      <span class="pill">💫 Little Memory</span>
-      <h2>The Day I Met You</h2>
-
-      <div class="cute-img">
-        <!-- Replace with any simple couple/heart stock photo -->
-        <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=600&h=600&fit=crop" alt="Us" />
-      </div>
-
-      <p class="small">
-        My world felt different after you walked into it. Softer, warmer, and a lot more like home.
-      </p>
-
-      <div class="row">
-        <button onclick="goTo(3)">Next 💕</button>
-      </div>
-
-      <div class="navdots">
-        <span class="dot"></span>
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-    </section>
-
-    <!-- Stage 3 -->
-    <section id="s3" class="hidden">
-      <span class="pill">🫶 For You</span>
-      <h2>A Tiny Love Meter</h2>
-
-      <p class="small">Tap the button and see what my heart says.</p>
-
-      <div class="meter">
-        <div class="fill" id="meterFill"></div>
-      </div>
-
-      <div class="row">
-        <button onclick="runMeter()">Check Love Level 💖</button>
-      </div>
-
-      <div class="navdots">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot active"></span>
-        <span class="dot"></span>
-      </div>
-    </section>
-
-    <!-- Stage 4 -->
-    <section id="s4" class="hidden">
-      <span class="pill">Forever ❤️</span>
-      <h2>Will You Be My Valentine?</h2>
-
-      <div class="cute-gif">
-        <!-- Replace with any cute couple/heart GIF -->
-        <img src="https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif" alt="Love" />
-      </div>
-
-      <p class="tap-text">💗</p>
-      <p class="small">I pick you. Today, tomorrow, and all the quiet little days in between.</p>
-
-      <div class="row">
-        <button onclick="sayYes()">Yes 🌹</button>
-      </div>
-
-      <div class="letter" id="letterText">
-        From the moment you came into my life, you turned ordinary days into my favorite memories.  
-        Thank you for being my safe place, my happiness, and my best friend.  
-        I love you more than these words can ever show.
-      </div>
-
-      <div class="countdown" id="countdown"></div>
-
-      <div class="navdots">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot active"></span>
-      </div>
-    </section>
+      <!-- Final -->
+      <section id="s5" class="hidden">
+        <span class="pill">💖 Final Score</span>
+        <h1>You Got <span id="finalScore">0</span> Love Points! ❤️</h1>
+        <p class="final-message">You're the best player and my favorite person. Will you be my Valentine forever?</p>
+        <div class="tapzone" onclick="celebrate()">💍 Yes!</div>
+        <p class="small">I love playing life with you. Always. 💕</p>
+      </section>
+    </div>
   </div>
 
   <script>
+    let totalScore = 0;
+    let tapCount = 0;
+    let quizDone = false;
+    let matches = 0;
+    let flippedCards = [];
+    let memoryCards = [];
+
+    // Navigation
     function goTo(stage) {
-      document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
-      document.getElementById("s" + stage).classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('s' + stage).classList.remove('hidden');
     }
 
-    function runMeter() {
-      const fill = document.getElementById("meterFill");
-      fill.style.width = "100%";
-
-      setTimeout(() => {
-        goTo(4);
-        startCountdown();
-      }, 1700);
+    // Game 1: Tap Love
+    function tapLove() {
+      tapCount++;
+      document.getElementById('tapCount').textContent = tapCount;
+      const progress = Math.min((tapCount / 50) * 100, 100);
+      document.getElementById('tapProgress').style.width = progress + '%';
     }
 
-    function sayYes() {
-      // You can add a tiny alert or just keep it soft
-      alert("Yay! You just made my heart very happy ❤️");
+    function nextGame(stage, points) {
+      totalScore += Math.min(tapCount, 50);
+      updateScore();
+      goTo(stage + 1);
     }
 
-    function startCountdown() {
-      const el = document.getElementById("countdown");
-      const specialDate = new Date(2027, 1, 14, 0, 0, 0); // Next Feb 14
-
-      function tick() {
-        const now = new Date();
-        const diff = specialDate - now;
-
-        if (diff <= 0) {
-          el.textContent = "Every day with you feels like Valentine's Day. 💕";
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        el.textContent = "Days until our next Valentine's Day: " + days + " 🌸";
-      }
-
-      tick();
-      setInterval(tick, 60 * 60 * 1000); // update hourly, simple & light
-    }
-  </script>
-</body>
-</html>
+    // Game 2: Quiz
+    function quizAnswer(id, answer) {
+      if (quizDone) return;
+      quizDone = true;
+      const msg = document.getElementById('quizMsg');
+     
