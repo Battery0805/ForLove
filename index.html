@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Love 💕</title>
+<title>Our Little Love 💕</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,35 +20,36 @@ padding:16px;
 background:#fff;
 max-width:480px;
 width:100%;
-border-radius:16px;
+border-radius:18px;
 padding:24px;
 text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
+box-shadow:0 8px 24px rgba(0,0,0,0.08);
 }
-h1{color:#e91e63;margin-bottom:10px}
+h1{color:#e91e63;margin-bottom:12px}
 h2{margin-bottom:10px}
 p{margin:10px 0;color:#555}
 button{
 background:#ff2d6b;
-color:white;
+color:#fff;
 border:none;
 padding:10px 20px;
 border-radius:999px;
 cursor:pointer;
 margin:6px;
+font-weight:500;
 }
 button:hover{background:#e11d5a}
 .hidden{display:none}
 .tap-img{
-width:150px;
+width:140px;
 cursor:pointer;
-margin:20px 0;
+margin:16px 0;
 }
 .memory-grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:8px;
-margin:20px auto;
+margin:18px auto;
 max-width:280px;
 }
 .memory-card{
@@ -59,9 +60,16 @@ align-items:center;
 justify-content:center;
 border-radius:8px;
 cursor:pointer;
-font-size:1.5rem;
+font-size:1.4rem;
 }
-.memory-card.matched{background:#28a745;color:white}
+.memory-card.matched{
+background:#28a745;
+color:#fff;
+}
+.timer{
+font-weight:bold;
+color:#e91e63;
+}
 </style>
 </head>
 
@@ -74,25 +82,24 @@ font-size:1.5rem;
 <!-- PAGE 1 -->
 <section id="page1">
 <h1>Our Little Love Game 💕</h1>
-<img src="love.png" width="120">
-<p>Let’s play something cute together 😌</p>
+<img src="love.png" width="110">
+<p>Let’s spend 2 minutes being cute together 😌</p>
 <button onclick="startGame()">Start</button>
 </section>
 
 <!-- PAGE 2 TAP -->
 <section id="page2" class="hidden">
 <h2>Tap the Heart 💖</h2>
+<p class="timer">Time: <span id="timeLeft">10</span>s</p>
 <img src="heart.gif" class="tap-img" onclick="tapHeart()">
 <p>Taps: <span id="tapCount">0</span></p>
-<button onclick="goQuiz()">Next</button>
 </section>
 
 <!-- PAGE 3 QUIZ -->
 <section id="page3" class="hidden">
-<h2>Quick Question 💭</h2>
-<p>What do I love the most?</p>
-<button onclick="answer(true)">Everything about you ❤️</button>
-<button onclick="answer(false)">Pizza 🍕</button>
+<h2>Quick Love Quiz 💭</h2>
+<p id="quizQuestion"></p>
+<div id="quizAnswers"></div>
 <p id="quizResult"></p>
 </section>
 
@@ -108,57 +115,100 @@ font-size:1.5rem;
 <section id="page5" class="hidden">
 <h1>You Win My Heart 💍</h1>
 <img src="heart.gif" width="120">
-<p>You scored <span id="finalScore"></span> love points 💕</p>
-<p>Forever sounds nice with you 😌</p>
+<p>You scored <strong><span id="finalScore"></span></strong> love points 💕</p>
+<p>Forever sounds really good with you 😌</p>
 </section>
 
 </div>
 
 <script>
-let taps=0;
 let score=0;
+let taps=0;
+let time=10;
+let timerInterval;
+let quizIndex=0;
 let matches=0;
 let flipped=[];
 
-function startGame(){
-document.getElementById("bgMusic").play();
-show(2);
-}
+const quizData=[
+{q:"What do I love most?",a:["Everything about you ❤️","Food 🍕"],c:0},
+{q:"Us in the future?",a:["Just friends","Forever 💍"],c:1},
+{q:"My favorite person?",a:["You 😌","Someone else"],c:0}
+];
 
 function show(n){
 document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
 document.getElementById("page"+n).classList.remove("hidden");
 }
 
-function tapHeart(){
-taps++;
-score++;
-document.getElementById("tapCount").textContent=taps;
+function startGame(){
+document.getElementById("bgMusic").play();
+show(2);
+startTapTimer();
 }
 
-function goQuiz(){
+function startTapTimer(){
+timerInterval=setInterval(()=>{
+time--;
+document.getElementById("timeLeft").textContent=time;
+if(time<=0){
+clearInterval(timerInterval);
 score+=taps;
 show(3);
+loadQuiz();
+}
+},1000);
 }
 
-function answer(correct){
-if(correct){
+function tapHeart(){
+if(time>0){
+taps++;
+document.getElementById("tapCount").textContent=taps;
+}
+}
+
+function loadQuiz(){
+if(quizIndex>=quizData.length){
+show(4);
+initMemory();
+return;
+}
+let q=quizData[quizIndex];
+document.getElementById("quizQuestion").textContent=q.q;
+let answers=document.getElementById("quizAnswers");
+answers.innerHTML="";
+q.a.forEach((text,i)=>{
+let btn=document.createElement("button");
+btn.textContent=text;
+btn.onclick=()=>answerQuiz(i);
+answers.appendChild(btn);
+});
+}
+
+function answerQuiz(i){
+let correct=quizData[quizIndex].c;
+if(i===correct){
 score+=10;
 document.getElementById("quizResult").textContent="Correct 😌";
 }else{
 document.getElementById("quizResult").textContent="Still cute though 💕";
 }
-setTimeout(()=>show(4),1000);
+quizIndex++;
+setTimeout(()=>{
+document.getElementById("quizResult").textContent="";
+loadQuiz();
+},800);
 }
 
 function initMemory(){
-let icons=["💖","💕","💖","💕","💍","🌸","💍","🌸"];
-icons.sort(()=>Math.random()-0.5);
+let icons=["💖","💕","💍","🌸"];
+let cards=[...icons,...icons].sort(()=>Math.random()-0.5);
 let grid=document.getElementById("memoryGrid");
 grid.innerHTML="";
 matches=0;
 document.getElementById("matchCount").textContent=0;
-icons.forEach(icon=>{
+
+cards.forEach(icon=>{
 let card=document.createElement("div");
 card.className="memory-card";
 card.dataset.icon=icon;
@@ -168,12 +218,13 @@ grid.appendChild(card);
 }
 
 function flipCard(card){
-if(flipped.length<2 && !card.classList.contains("matched")){
+if(card.classList.contains("matched") || flipped.length===2) return;
+
 card.textContent=card.dataset.icon;
 flipped.push(card);
+
 if(flipped.length===2){
 setTimeout(checkMatch,600);
-}
 }
 }
 
@@ -183,8 +234,9 @@ flipped.forEach(c=>c.classList.add("matched"));
 matches++;
 score+=5;
 document.getElementById("matchCount").textContent=matches;
-}
+}else{
 flipped.forEach(c=>c.textContent="");
+}
 flipped=[];
 }
 
@@ -192,8 +244,6 @@ function finish(){
 document.getElementById("finalScore").textContent=score;
 show(5);
 }
-
-document.addEventListener("DOMContentLoaded",initMemory);
 </script>
 
 </body>
