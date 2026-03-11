@@ -1,250 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Little Love 💕</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Special Invitation</title>
+    <style>
+        :root {
+            --gold: #c5a059;
+            --dark: #1a1a1a;
+            --cream: #fffdfa;
+            --soft-pink: #f8edeb;
+        }
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:system-ui,-apple-system;
-background:#fff5f8;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:16px;
-}
-.card{
-background:#fff;
-max-width:480px;
-width:100%;
-border-radius:18px;
-padding:24px;
-text-align:center;
-box-shadow:0 8px 24px rgba(0,0,0,0.08);
-}
-h1{color:#e91e63;margin-bottom:12px}
-h2{margin-bottom:10px}
-p{margin:10px 0;color:#555}
-button{
-background:#ff2d6b;
-color:#fff;
-border:none;
-padding:10px 20px;
-border-radius:999px;
-cursor:pointer;
-margin:6px;
-font-weight:500;
-}
-button:hover{background:#e11d5a}
-.hidden{display:none}
-.tap-img{
-width:140px;
-cursor:pointer;
-margin:16px 0;
-}
-.memory-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:8px;
-margin:18px auto;
-max-width:280px;
-}
-.memory-card{
-background:#ffd6e7;
-height:60px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:8px;
-cursor:pointer;
-font-size:1.4rem;
-}
-.memory-card.matched{
-background:#28a745;
-color:#fff;
-}
-.timer{
-font-weight:bold;
-color:#e91e63;
-}
-</style>
+        body {
+            background-color: var(--soft-pink);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark);
+            overflow: hidden; /* Prevents scrolling during the "No" button chase */
+        }
+
+        #container {
+            width: 85%;
+            max-width: 350px;
+            background: white;
+            padding: 2.5rem 1.5rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
+        .header-img {
+            width: 80px;
+            height: 80px;
+            background: var(--gold);
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .details-tag {
+            background: var(--soft-pink);
+            padding: 8px 15px;
+            border-radius: 12px;
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+        }
+
+        button {
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #yesBtn {
+            background-color: var(--gold);
+            color: white;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.4);
+        }
+
+        #noBtn {
+            background-color: #f1f1f1;
+            color: #888;
+            position: relative; /* Essential for the move script */
+        }
+
+        /* Success State */
+        #success-message {
+            display: none;
+        }
+
+        .venue {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-
 <body>
 
-<audio id="bgMusic" src="bg-music.mp3" loop></audio>
+    <div id="container">
+        <div id="invite-content">
+            <div class="header-img">✨</div>
+            <h1>A fragrant Sunday plan?</h1>
+            <p>I want to take you to a <b>Perfume Making Workshop</b> this Sunday afternoon.</p>
+            <div class="details-tag">Sunday @ 3:00 PM</div>
+            
+            <form id="notifyForm" action="https://api.web3forms.com/submit" method="POST" style="display:none;">
+                <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                <input type="hidden" name="subject" value="SHE SAID YES! 🌹">
+                <input type="hidden" name="message" value="Agal (Chello) just clicked 'Yes' for the Sunday Perfume Date!">
+            </form>
 
-<div class="card">
+            <div class="btn-container">
+                <button id="yesBtn" onclick="handleYes()">Yes, sounds perfect!</button>
+                <button id="noBtn" ontouchstart="moveButton()" onclick="moveButton()">I'll pass</button>
+            </div>
+        </div>
 
-<!-- PAGE 1 -->
-<section id="page1">
-<h1>Our Little Love Game 💕</h1>
-<img src="love.png" width="110">
-<p>Let’s spend 2 minutes being cute together 😌</p>
-<button onclick="startGame()">Start</button>
-</section>
+        <div id="success-message">
+            <div class="header-img">🧴</div>
+            <h1>Great!</h1>
+            <p>The tickets are booked. Let's create a signature scent as unique as you are.</p>
+            <div class="venue">
+                📍I'll pick you up then<br>
+                Third Wave Coffee, Kilpauk<br>
+                🕒 1:00 PM 
+		Be curious post that somethings else is there keep guessing LOL!
+            </div>
+        </div>
+    </div>
 
-<!-- PAGE 2 TAP -->
-<section id="page2" class="hidden">
-<h2>Tap the Heart 💖</h2>
-<p class="timer">Time: <span id="timeLeft">10</span>s</p>
-<img src="heart.gif" class="tap-img" onclick="tapHeart()">
-<p>Taps: <span id="tapCount">0</span></p>
-</section>
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
 
-<!-- PAGE 3 QUIZ -->
-<section id="page3" class="hidden">
-<h2>Quick Love Quiz 💭</h2>
-<p id="quizQuestion"></p>
-<div id="quizAnswers"></div>
-<p id="quizResult"></p>
-</section>
+        function handleYes() {
+            // 1. Submit the hidden form to notify you
+            const form = document.getElementById('notifyForm');
+            const formData = new FormData(form);
 
-<!-- PAGE 4 MEMORY -->
-<section id="page4" class="hidden">
-<h2>Match the Hearts 🧠</h2>
-<div class="memory-grid" id="memoryGrid"></div>
-<p>Matches: <span id="matchCount">0</span>/4</p>
-<button onclick="finish()">Finish</button>
-</section>
+            fetch(form.action, {
+                method: "POST",
+                body: formData
+            });
 
-<!-- PAGE 5 FINAL -->
-<section id="page5" class="hidden">
-<h1>You Win My Heart 💍</h1>
-<img src="heart.gif" width="120">
-<p>You scored <strong><span id="finalScore"></span></strong> love points 💕</p>
-<p>Forever sounds really good with you 😌</p>
-</section>
-
-</div>
-
-<script>
-let score=0;
-let taps=0;
-let time=10;
-let timerInterval;
-let quizIndex=0;
-let matches=0;
-let flipped=[];
-
-const quizData=[
-{q:"What do I love most?",a:["Everything about you ❤️","Food 🍕"],c:0},
-{q:"Us in the future?",a:["Just friends","Forever 💍"],c:1},
-{q:"My favorite person?",a:["You 😌","Someone else"],c:0}
-];
-
-function show(n){
-document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
-document.getElementById("page"+n).classList.remove("hidden");
-}
-
-function startGame(){
-document.getElementById("bgMusic").play();
-show(2);
-startTapTimer();
-}
-
-function startTapTimer(){
-timerInterval=setInterval(()=>{
-time--;
-document.getElementById("timeLeft").textContent=time;
-if(time<=0){
-clearInterval(timerInterval);
-score+=taps;
-show(3);
-loadQuiz();
-}
-},1000);
-}
-
-function tapHeart(){
-if(time>0){
-taps++;
-document.getElementById("tapCount").textContent=taps;
-}
-}
-
-function loadQuiz(){
-if(quizIndex>=quizData.length){
-show(4);
-initMemory();
-return;
-}
-let q=quizData[quizIndex];
-document.getElementById("quizQuestion").textContent=q.q;
-let answers=document.getElementById("quizAnswers");
-answers.innerHTML="";
-q.a.forEach((text,i)=>{
-let btn=document.createElement("button");
-btn.textContent=text;
-btn.onclick=()=>answerQuiz(i);
-answers.appendChild(btn);
-});
-}
-
-function answerQuiz(i){
-let correct=quizData[quizIndex].c;
-if(i===correct){
-score+=10;
-document.getElementById("quizResult").textContent="Correct 😌";
-}else{
-document.getElementById("quizResult").textContent="Still cute though 💕";
-}
-quizIndex++;
-setTimeout(()=>{
-document.getElementById("quizResult").textContent="";
-loadQuiz();
-},800);
-}
-
-function initMemory(){
-let icons=["💖","💕","💍","🌸"];
-let cards=[...icons,...icons].sort(()=>Math.random()-0.5);
-let grid=document.getElementById("memoryGrid");
-grid.innerHTML="";
-matches=0;
-document.getElementById("matchCount").textContent=0;
-
-cards.forEach(icon=>{
-let card=document.createElement("div");
-card.className="memory-card";
-card.dataset.icon=icon;
-card.onclick=()=>flipCard(card);
-grid.appendChild(card);
-});
-}
-
-function flipCard(card){
-if(card.classList.contains("matched") || flipped.length===2) return;
-
-card.textContent=card.dataset.icon;
-flipped.push(card);
-
-if(flipped.length===2){
-setTimeout(checkMatch,600);
-}
-}
-
-function checkMatch(){
-if(flipped[0].dataset.icon===flipped[1].dataset.icon){
-flipped.forEach(c=>c.classList.add("matched"));
-matches++;
-score+=5;
-document.getElementById("matchCount").textContent=matches;
-}else{
-flipped.forEach(c=>c.textContent="");
-}
-flipped=[];
-}
-
-function finish(){
-document.getElementById("finalScore").textContent=score;
-show(5);
-}
-</script>
-
+            // 2. Switch the UI to show the success message
+            document.getElementById('invite-content').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+    </script>
 </body>
 </html>
